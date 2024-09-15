@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
+import { useAuth } from "@clerk/clerk-react";
 
 interface Product {
   _id: string;
@@ -43,7 +44,11 @@ const EventDetailPage: React.FC = () => {
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { userId } = useAuth();
+  const navigate = useNavigate();
 
+  const url = `http://localhost:3000/api/events/${id}/payment/user/${userId}`;
+  
   useEffect(() => {
     const fetchEventData = async () => {
       try {
@@ -71,21 +76,44 @@ const EventDetailPage: React.FC = () => {
     );
   };
 
-  const handlePay = () => {
-    const total = event?.products.reduce(
-      (sum, p) => (selectedProducts.includes(p._id) ? sum + p.price * p.units : sum),
-      0
-    ) ?? 0;
+  // const apiUrl = "https://localhost:3000/api/events/" + id + "/payment/user/" + user.clerk + "/";
 
-    const totalPerParticipant = event?.equitative ? total / (event.members?.length ?? 1) : total;
+  const handlePay = async () => {
+    if (!event) return;
 
-    // Handle payment logic here
-    console.log("Pay total:", totalPerParticipant);
-  };
+    const total = event.equitative
+      ? event.total / event.members.length
+      : event.products.reduce(
+          (sum, p) => (selectedProducts.includes(p._id) ? sum + p.price * p.units : sum),
+          0
+        );
 
-  const handleAddItem = () => {
-    // Logic to add new item
-    console.log("Add new item logic");
+    const payload = {
+      products: event.equitative ? [] : selectedProducts,
+      amount: total.toFixed(2)
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Payment failed');
+      }
+
+      const result = await response.json();
+      navigate('/dashboard');
+      console.log('Payment successful:', result);
+      // You might want to update the UI or refetch the event data here
+    } catch (error) {
+      console.error('Error during payment:', error);
+      // Handle the error (e.g., show an error message to the user)
+    }
   };
 
   if (loading) return <div>Loading...</div>;
@@ -96,7 +124,7 @@ const EventDetailPage: React.FC = () => {
     <div className="relative flex flex-col min-h-screen font-serif">
       <Navbar />
 
-      <main className="flex-grow pt-12 pb-8 px-4">
+      <main className="flex-grow pt-24 pb-8 px-4">
         <div className="max-w-3xl mx-auto bg-white p-6 shadow-md rounded-md">
           <h1 className="text-3xl font-bold mb-6">{event.name}</h1>
           <p className="text-lg mb-4">Event ID: {id}</p>
@@ -163,6 +191,7 @@ const EventDetailPage: React.FC = () => {
               Total: ${event.total.toFixed(2)}
               {event.equitative ? ` (Per Participant: ${(event.total / event.members.length).toFixed(2)})` : ''}
             </p>
+
             <button
               type="button"
               className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
@@ -171,15 +200,6 @@ const EventDetailPage: React.FC = () => {
             >
               {event.equitative ? "Pay Now" : "Pay for selected items"}
             </button>
-            {event.admin._id === "66e694bf0b887bb75cbd3864" && !event.equitative && (
-              <button
-                type="button"
-                className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors mt-4"
-                onClick={handleAddItem}
-              >
-                Add Item
-              </button>
-            )}
           </div>
 
           {/* Members List */}

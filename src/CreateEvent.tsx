@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Footer from "./components/footer";
 import Navbar from "./components/navbar";
 import { createEvent } from "./api/back.js";
-import { useUser } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 
 interface Requirement {
@@ -26,7 +26,6 @@ const CreateEvent: React.FC = () => {
   const [requirements, setRequirements] = useState<Requirement[]>([]);
   const [members, setMembers] = useState<Member[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
-  const { user } = useUser();
 
   useEffect(() => {
     fetchMembers();
