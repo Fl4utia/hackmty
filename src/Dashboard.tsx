@@ -80,7 +80,7 @@ const Dashboard: React.FC = () => {
 
       <main className="flex-grow pt-12 pb-8 px-4">
         <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {events.length > 0 ? (
+          {events&&events.length > 0 ? (
             events.map((event, index) => (
               <Card
                 key={index}
