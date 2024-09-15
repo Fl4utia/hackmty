@@ -133,6 +133,12 @@ const LandingPage = () => {
           <div className="max-w-md mx-auto p-4 text-white ">
             <div className="text-center">
               <h2 className="text-2xl font-bold">Click here to get started</h2>
+              <button
+                  onClick={() => (window.location.href = "http://localhost:3001")} // Redirect to the chatbot
+                  className="mt-4 px-6 py-2 mx-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                >
+                  AI assitance
+                </button>
               {isSignedIn ? (
                 <button
                   onClick={() => (window.location.href = "/dashboard")} // Redirect to the dashboard
