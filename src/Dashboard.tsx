@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./components/card";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import { existsUser } from "./api/clerk.js";
 import { getEvents } from "./api/back.js";
 
@@ -12,13 +12,14 @@ const Dashboard: React.FC = () => {
   const { userId } = useAuth(); // Fetch the current session (token) from Clerk
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Loading state
+  const { user } = useUser();
 
   useEffect(() => {
     if (userId) {
       console.log("Fetching user data for user ID:", userId);
       const fetchData = async () => {
         try {
-          const data = await existsUser(userId);
+          await existsUser(userId, user?.firstName, user?.lastName, user?.emailAddresses);        
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
