@@ -12,6 +12,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/SignIn" element={<SignUpPage />} />
+        <Route path="/Dashboard" element={<Dashboard />} />
         
       </Routes>
     </div>
