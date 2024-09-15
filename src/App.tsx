@@ -65,19 +65,21 @@ const LandingPage = () => {
         {/* Contact Section */}
         <section id="contact" className="py-20 bg-[#00303F] text-white">
   <div className="text-center">
-    <h2 className="text-4xl mb-4">Get started TODAY!</h2>
-    <p className="mb-8">Ready to manage your event with full transparency?</p>
+    <h2 className="text-4xl mb-4">Ready to try it out?</h2>
+    
   </div>
   <div className="max-w-md mx-auto p-4 text-white ">
-    <div className="text-center mb-6">
-      <h2 className="text-2xl font-bold mb-4">Login</h2>
-      {/* Add login functionality */}
-    </div>
-    <div className="text-center">
-      <h2 className="text-2xl font-bold mb-4">Register</h2>
-      {/* Add register functionality */}
-    </div>
+  <div className="text-center">
+    <h2 className="text-2xl font-bold">Click here to get started</h2>
+    <button
+      onClick={() => window.location.href = '/login'} // Redirect to the login page
+      className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+    >
+      Get Started
+    </button>
   </div>
+</div>
+
 </section>
 
 
