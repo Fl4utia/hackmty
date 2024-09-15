@@ -15,7 +15,7 @@ const Dashboard: React.FC = () => {
         <div className="flex items-center">
           <h1 className="text-4xl font-bold">Your Events</h1>
           {/* Plus icon for redirection */}
-          <a href="/add-event" className="ml-4 text-blue-500 hover:text-blue-700 text-4xl font-bold">
+          <a href="/CreateEvent" className="ml-4 text-blue-500 hover:text-blue-700 text-4xl font-bold">
             +
           </a>
         </div>
