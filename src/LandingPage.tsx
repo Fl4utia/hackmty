@@ -73,7 +73,7 @@ const LandingPage = () => {
   <div className="text-center">
     <h2 className="text-2xl font-bold">Click here to get started</h2>
     <button
-      onClick={() => window.location.href = '/login'} // Redirect to the login page
+      onClick={() => window.location.href = '/SignIn'}  // Redirect to the login page
       className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
     >
       Get Started
