@@ -76,8 +76,6 @@ const EventDetailPage: React.FC = () => {
     );
   };
 
-  // const apiUrl = "https://localhost:3000/api/events/" + id + "/payment/user/" + user.clerk + "/";
-
   const handlePay = async () => {
     if (!event) return;
 
@@ -116,9 +114,23 @@ const EventDetailPage: React.FC = () => {
     }
   };
 
+  const hasUserPaid = () => {
+    if (!event || !userId) return false;
+    const currentUser = event.members.find(member => member.user.clerkUserId === userId);
+    if (!currentUser) return false;
+    
+    const userPayment = currentUser.paid;
+    const requiredPayment = event.equitative ? event.total / event.members.length : event.total;
+    
+    return userPayment >= requiredPayment;
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!event) return <div>No event data found</div>;
+
+  const isPaymentDisabled = hasUserPaid();
+  const isNoItemSelected = !event.equitative && selectedProducts.length === 0;
 
   return (
     <div className="relative flex flex-col min-h-screen font-serif">
@@ -177,6 +189,7 @@ const EventDetailPage: React.FC = () => {
                         type="checkbox"
                         checked={selectedProducts.includes(product._id)}
                         onChange={() => handleSelectProduct(product._id)}
+                        disabled={product.paid}
                       />
                     </td>
                   )}
@@ -194,11 +207,21 @@ const EventDetailPage: React.FC = () => {
 
             <button
               type="button"
-              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
+              className={`bg-blue-500 text-white py-2 px-4 rounded-md transition-colors ${
+                isPaymentDisabled || isNoItemSelected ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'
+              }`}
               onClick={handlePay}
-              disabled={event.equitative ? false : selectedProducts.length === 0}
+              disabled={isPaymentDisabled || isNoItemSelected}
             >
-              {event.equitative ? "Pay Now" : "Pay for selected items"}
+              {isPaymentDisabled 
+                ? "Already Paid" 
+                : (event.equitative 
+                    ? "Pay Now" 
+                    : isNoItemSelected 
+                      ? "Select items to pay" 
+                      : "Pay for selected items"
+                  )
+              }
             </button>
           </div>
 
