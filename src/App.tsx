@@ -1,93 +1,95 @@
-import {SignIn, SignUp } from '@clerk/clerk-react';
-
 const LandingPage = () => {
   return (
     <div className="font-serif">
-      <header id="header" className="fixed top-0 w-full bg-[#030f12] text-white flex items-center py-2 z-10">
+      <header id="header" className="fixed top-0 w-full bg-[#00303F] text-white flex items-center py-2 z-10">
         <div className="w-1/5 ml-4">
-          <img id="header-img" className="w-1/2" src="https://images2.imgbox.com/27/ac/VlF6wjCv_o.png" alt="company-logo" />
+          <img id="header-img" className="w-1/2" src="https://imgur.com/IXMsbAn.png" alt="company-logo" />
         </div>
         <nav id="nav-bar" className="w-4/5">
           <ul className="flex justify-around text-gray-400">
-            <li><a className="nav-link" href="#norm">Norm</a></li>
+            <li><a className="nav-link" href="#overview">FinVents</a></li>
             <li><a className="nav-link" href="#story">Our Story</a></li>
-            <li><a className="nav-link" href="#designs">Designs</a></li>
-            <li><a className="nav-link" href="#contact">Contact</a></li>
+            <li><a className="nav-link" href="#events">Events</a></li>
+            <li><a className="nav-link" href="#contact">Get Started</a></li>
           </ul>
         </nav>
       </header>
 
       <main className="pt-20">
-        {/* Norm Section */}
-        <section id="norm" className="text-center py-20 bg-white">
-          <h1 className="text-6xl tracking-widest mb-6">NORM</h1>
-          <p className="text-xl">~ THE INTERIOR STANDARD ~</p>
+        {/* Overview Section */}
+        <section id="overview" className="text-center py-20 bg-white">
+          <h1 className="text-6xl tracking-widest mb-6">FinVents</h1>
+          <p className="text-xl">~ TRANSPARENCY FOR YOUR SPECIAL EVENTS ~</p>
           <div className="mt-10">
-            <img className="w-full max-w-3xl mx-auto" src="https://images2.imgbox.com/75/2b/xlGEMbdX_o.jpg" alt="Living room sample" />
+            <img className="w-full max-w-3xl mx-auto" src="https://imgur.com/9Qe5nd2.jpg" alt="Event planning" />
           </div>
         </section>
 
         {/* Our Story Section */}
-        <section id="story" className="flex flex-col-reverse lg:flex-row items-center py-20 bg-[#030f12] text-white">
+        <section id="story" className="flex flex-col-reverse lg:flex-row items-center py-20 bg-[#00303F] text-white">
           <div className="w-full lg:w-1/2 p-8">
             <h2 className="text-4xl mb-4 text-center">Our Story</h2>
             <p className="text-lg leading-relaxed text-justify">
-              Furnishing your home can be quite overwhelming at times, at least that's how it was for us. Norm was born to help others 
-              going through the maze that is interior design. We decided to curate modern interior design trends, inspirations, tips 
-              and tricks from the vast interior collective to help you bring your home to life.
+              FinVents was founded with a mission to provide financial transparency for major life events like weddings, graduations, and corporate events. 
+              In collaboration with Capital One, we aim to help people manage and track their event expenses, ensuring clarity and confidence in every financial decision.
+              Whether it's a wedding, a graduation, or any special celebration, we're here to simplify the process.
             </p>
           </div>
           <div className="w-full lg:w-1/2 p-8">
-            <img className="w-full" src="https://roohome.com/wp-content/uploads/2016/10/scandinavian-small-apartment-interior.jpg" alt="Scandinavian apartment interior" />
+            <img className="w-full" src="https://imgur.com/f1RsywD.png" alt="Celebration event" />
           </div>
         </section>
 
-        {/* Featured Designs Section */}
-        <section id="designs" className="py-20 bg-white text-center">
-          <h2 className="text-4xl mb-6">Featured</h2>
-          <p className="mb-10">Take a look at some of our featured picks that have made editorial debuts.</p>
+        {/* Events Section */}
+        <section id="events" className="py-20 bg-white text-center">
+          <h2 className="text-4xl mb-6">Events We Support</h2>
+          <p className="mb-10">From weddings to graduations, we have you covered.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-8">
             <figure className="w-full">
-              <img src="https://images2.imgbox.com/78/40/AXaX0dGj_o.jpg" alt="modern style living room" className="w-full" />
-              <figcaption className="text-sm mt-2">Image by Michal Jarmoluk from Pixabay</figcaption>
+              <img src="https://imgur.com/twqvpsQ.png" alt="Wedding" className="w-full h-64 object-cover" />
+              <figcaption className="text-sm mt-2">Weddings</figcaption>
             </figure>
             <figure className="w-full">
-              <img src="https://images2.imgbox.com/61/65/spezPzqR_o.jpg" alt="Grey sofa in minimalist living room" className="w-full" />
-              <figcaption className="text-sm mt-2">Image by StockSnap from Pixabay</figcaption>
+              <img src="https://imgur.com/7Bwtw2N.png" alt="Graduation" className="w-full h-64 object-cover" />
+              <figcaption className="text-sm mt-2">Graduations</figcaption>
             </figure>
             <figure className="w-full">
-              <img src="https://images2.imgbox.com/08/37/9tQMXva6_o.jpg" alt="Living Room Modern Interior" className="w-full" />
-              <figcaption className="text-sm mt-2">Image by miapirttila from Pixabay</figcaption>
+              <img src="https://imgur.com/cwb7rrz.png" alt="Corporate Event" className="w-full h-64 object-cover" />
+              <figcaption className="text-sm mt-2">Corporate Events</figcaption>
             </figure>
           </div>
         </section>
+
+
 
         {/* Contact Section */}
-        <section id="contact" className="py-20 bg-[#030f12] text-white">
-          <div className="text-center">
-            <h2 className="text-4xl mb-4">Get started TODAY!</h2>
-            <p className="mb-8">Choose an option to get started:</p>
-          </div>
-          <div className="max-w-md mx-auto p-4 bg-white text-black rounded-lg shadow-lg">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-4">Login</h2>
-              <SignIn />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Register</h2>
-              <SignUp />
-            </div>
-          </div>
-        </section>
+        <section id="contact" className="py-20 bg-[#00303F] text-white">
+  <div className="text-center">
+    <h2 className="text-4xl mb-4">Get started TODAY!</h2>
+    <p className="mb-8">Ready to manage your event with full transparency?</p>
+  </div>
+  <div className="max-w-md mx-auto p-4 text-white ">
+    <div className="text-center mb-6">
+      <h2 className="text-2xl font-bold mb-4">Login</h2>
+      {/* Add login functionality */}
+    </div>
+    <div className="text-center">
+      <h2 className="text-2xl font-bold mb-4">Register</h2>
+      {/* Add register functionality */}
+    </div>
+  </div>
+</section>
+
+
       </main>
 
-      <footer className="bg-[#1d2c2f] text-white text-center py-4">
+      <footer className="bg-[#00303F] text-white text-center py-4">
         <div className="flex justify-center space-x-4 mb-2">
           <span>Privacy</span>
           <span>Terms</span>
           <span>Contact</span>
         </div>
-        <p>Created by Lulet. Reach out on twitter @luizoutlets<br />Copyright 2019</p>
+        <p>Created by FinVents Team in collaboration with Capital One<br />Copyright 2024</p>
       </footer>
     </div>
   );
