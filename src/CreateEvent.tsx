@@ -47,7 +47,7 @@ const CreateEvent: React.FC = () => {
   };
 
   const handleAddProduct = () => {
-    setRequirements([...requirements, { name: "", units: 1, price: 0 }]);
+    setRequirements([...requirements, { name: "", units: 1, price: null }]);
   };
 
   const handleRequirementChange = (

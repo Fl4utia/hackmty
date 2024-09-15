@@ -34,7 +34,7 @@ const Dashboard: React.FC = () => {
       console.log("Fetching user data for user ID:", userId);
       const fetchData = async () => {
         try {
-          await existsUser(userId, user?.firstName, user?.lastName, user?.emailAddresses);        
+          await existsUser(userId, user?.firstName, user?.lastName, user?.emailAddresses[0].emailAddress);        
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
@@ -86,16 +86,6 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Code box aligned to the right */}
-        <div className="ml-auto bg-white shadow-md rounded-md p-2 flex flex-col items-center pt-6">
-          <input
-            type="text"
-            placeholder="Enter Code"
-            className="border border-gray-300 rounded-md p-1 mb-2 text-sm w-36"
-          />
-          <button className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition-colors text-sm">
-            Join
-          </button>
-        </div>
       </div>
 
       <main className="flex-grow pt-6 pb-8 px-4">
