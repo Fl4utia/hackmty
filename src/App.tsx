@@ -14,8 +14,8 @@ function App() {
           element={<Dashboard />}
           caseSensitive={false}
         />
-        <Route path="*" element={<NotFound />} />
         <Route path="/SignIn" element={<SignUpPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
