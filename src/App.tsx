@@ -9,11 +9,13 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/dashboard"
+          element={<Dashboard />}
+          caseSensitive={false}
+        />
         <Route path="*" element={<NotFound />} />
         <Route path="/SignIn" element={<SignUpPage />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
-        
       </Routes>
     </div>
   );
