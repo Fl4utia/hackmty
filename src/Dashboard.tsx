@@ -8,9 +8,24 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { existsUser } from "./api/clerk.js";
 import { getEvents } from "./api/back.js";
 
+interface Member {
+  paid: number;  
+  // Add other member properties here
+}
+
+interface Event {
+  _id: string;
+  name: string;
+  admin: {
+    name: string;
+  };
+  members: Member[];
+  total: number;
+}
+
 const Dashboard: React.FC = () => {
   const { userId } = useAuth(); // Fetch the current session (token) from Clerk
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Loading state
   const { user } = useUser();
 
@@ -45,6 +60,11 @@ const Dashboard: React.FC = () => {
     fetchEvents();
   }, [userId]);
 
+  const calculateTotalPaid = (members: Member[]): number => {
+    return members.reduce((total, member) => total + member.paid, 0);
+  };
+
+
   if (loading) {
     return <div>Loading...</div>; // Optionally show a loading indicator
   }
@@ -53,7 +73,7 @@ const Dashboard: React.FC = () => {
       <Navbar />
 
       {/* Flex container for header, plus icon, and code input */}
-      <div className="flex justify-between items-center pt-16 px-8">
+      <div className="flex justify-between items-center pt-24 px-8">
         <div className="flex items-center">
           <h1 className="text-4xl font-bold">Your Events</h1>
           {/* Plus icon for redirection */}
@@ -73,20 +93,21 @@ const Dashboard: React.FC = () => {
             className="border border-gray-300 rounded-md p-1 mb-2 text-sm w-36"
           />
           <button className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition-colors text-sm">
-            Add Code
+            Join
           </button>
         </div>
       </div>
 
-      <main className="flex-grow pt-12 pb-8 px-4">
+      <main className="flex-grow pt-6 pb-8 px-4">
         <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {events.length > 0 ? (
+          {events && events.length > 0 ? (
             events.map((event, index) => (
               <Card
                 key={index}
                 title={event.name}
                 author={event.admin.name}
-                // isPaid={event.members.some((member) => member.paid > 0)}
+                id={event._id}
+                isPaid={event.total == calculateTotalPaid(event.members)}
               />
             ))
           ) : (

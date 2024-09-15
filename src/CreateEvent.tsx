@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "./components/footer";
 import Navbar from "./components/navbar";
 import { createEvent } from "./api/back.js";
@@ -8,7 +8,13 @@ import { useNavigate } from "react-router-dom";
 interface Requirement {
   name: string;
   units: number;
-  price: number; // Added price field
+  price: number;
+}
+
+interface Member {
+  _id: string;
+  name: string;
+  clerkUserId: string;
 }
 
 const CreateEvent: React.FC = () => {
@@ -18,7 +24,26 @@ const CreateEvent: React.FC = () => {
   const [endDate, setEndDate] = useState<string>("");
   const [isEquitativo, setIsEquitativo] = useState<boolean | null>(null);
   const [requirements, setRequirements] = useState<Requirement[]>([]);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const { user } = useUser();
+
+  useEffect(() => {
+    fetchMembers();
+  }, []);
+
+  const fetchMembers = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/users");
+      if (!response.ok) {
+        throw new Error("Failed to fetch members");
+      }
+      const data = await response.json();
+      setMembers(data);
+    } catch (error) {
+      console.error("Error fetching members:", error);
+    }
+  };
 
   const handleAddProduct = () => {
     setRequirements([...requirements, { name: "", units: 1, price: 0 }]);
@@ -47,6 +72,16 @@ const CreateEvent: React.FC = () => {
     setIsEquitativo(e.target.value === "yes");
   };
 
+  const handleMemberSelection = (memberId: string) => {
+    setSelectedMembers((prevSelected) => {
+      if (prevSelected.includes(memberId)) {
+        return prevSelected.filter((id) => id !== memberId);
+      } else {
+        return [...prevSelected, memberId];
+      }
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log({
@@ -56,6 +91,7 @@ const CreateEvent: React.FC = () => {
       products: requirements,
       equitative: isEquitativo,
       admin: user?.id,
+      members: selectedMembers
     });
 
     createEvent({
@@ -65,6 +101,7 @@ const CreateEvent: React.FC = () => {
       products: requirements,
       admin: user?.id,
       equitative: isEquitativo,
+      members: selectedMembers
     }).then((data) => {
       console.log(data);
 
@@ -77,6 +114,7 @@ const CreateEvent: React.FC = () => {
         setEndDate("");
         setIsEquitativo(null);
         setRequirements([]);
+        setSelectedMembers([]);
 
         // Redirect to event page
         Navigate(`/dashboard`);
@@ -88,7 +126,7 @@ const CreateEvent: React.FC = () => {
     <div className="relative flex flex-col min-h-screen font-serif">
       <Navbar />
 
-      <main className="flex-grow pt-12 pb-8 px-4">
+      <main className="flex-grow pt-24 pb-8 px-4">
         <div className="max-w-xl mx-auto bg-white p-6 shadow-md rounded-md">
           <h1 className="text-3xl font-bold mb-6 text-center">Create Event</h1>
 
@@ -96,7 +134,7 @@ const CreateEvent: React.FC = () => {
             {/* Event Name */}
             <div className="mb-4">
               <label className="block text-gray-700 font-semibold mb-2">
-                Nombre del Evento
+                Event name
               </label>
               <input
                 type="text"
@@ -111,7 +149,7 @@ const CreateEvent: React.FC = () => {
             {/* Start Date */}
             <div className="mb-4">
               <label className="block text-gray-700 font-semibold mb-2">
-                Fecha Inicio
+                Start date
               </label>
               <input
                 type="datetime-local"
@@ -125,7 +163,7 @@ const CreateEvent: React.FC = () => {
             {/* End Date */}
             <div className="mb-4">
               <label className="block text-gray-700 font-semibold mb-2">
-                Fecha Fin
+                End date
               </label>
               <input
                 type="datetime-local"
@@ -139,7 +177,7 @@ const CreateEvent: React.FC = () => {
             {/* Is Equitativo */}
             <div className="mb-4">
               <label className="block text-gray-700 font-semibold mb-2">
-                ¿Es Equitativo?
+                Equally divided
               </label>
               <div className="flex items-center mb-2">
                 <label className="mr-4">
@@ -172,10 +210,32 @@ const CreateEvent: React.FC = () => {
               </p>
             </div>
 
+            {/* Select Members */}
+            <div className="mb-4">
+              <label className="block text-gray-700 font-semibold mb-2">
+                Select Members
+              </label>
+              <div className="max-h-40 overflow-y-auto">
+                {members.map((member) => (
+                  <div key={member._id} className="mb-2">
+                    <label className="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded">
+                      <input
+                        type="checkbox"
+                        checked={selectedMembers.includes(member.clerkUserId)}
+                        onChange={() => handleMemberSelection(member.clerkUserId)}
+                        className="mr-3 form-checkbox h-5 w-5 text-blue-600 rounded"
+                      />
+                      <span className="text-gray-700">{member.name}</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Add Products */}
             <div className="mb-4">
               <label className="block text-gray-700 font-semibold mb-2">
-                Productos (Opcional)
+                Products and Services
               </label>
               {requirements.map((requirement, index) => (
                 <div key={index} className="mb-4 border-b pb-2">
@@ -238,7 +298,7 @@ const CreateEvent: React.FC = () => {
                 onClick={handleAddProduct}
                 className="bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition-colors"
               >
-                Add Product
+                Add
               </button>
             </div>
 
@@ -247,6 +307,7 @@ const CreateEvent: React.FC = () => {
               <button
                 type="submit"
                 className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
+                disabled={selectedMembers.length === 0}
               >
                 Create Event
               </button>

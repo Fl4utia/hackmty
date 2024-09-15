@@ -4,6 +4,7 @@ const BASE_URL = "http://localhost:3000";
 
 const createEvent = async (event) => {
   try {
+    console.log(event);
     const response = await fetch(`${BASE_URL}/api/events/`, {
       method: "POST",
       headers: {
