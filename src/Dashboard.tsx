@@ -10,12 +10,18 @@ const Dashboard: React.FC = () => {
     <div className="relative flex flex-col min-h-screen font-serif">
       <Navbar />
 
-      {/* Flex container for header and code input */}
+      {/* Flex container for header, plus icon, and code input */}
       <div className="flex justify-between items-center pt-16 px-8">
-        <h1 className="text-4xl font-bold">Your Events</h1>
+        <div className="flex items-center">
+          <h1 className="text-4xl font-bold">Your Events</h1>
+          {/* Plus icon for redirection */}
+          <a href="/add-event" className="ml-4 text-blue-500 hover:text-blue-700 text-4xl font-bold">
+            +
+          </a>
+        </div>
 
         {/* Code box aligned to the right */}
-        <div className="ml-auto bg-white shadow-md rounded-md p-2 flex flex-col items-center">
+        <div className="ml-auto bg-white shadow-md rounded-md p-2 flex flex-col items-center pt-6">
           <input
             type="text"
             placeholder="Enter Code"
